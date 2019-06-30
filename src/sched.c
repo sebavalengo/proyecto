@@ -1,6 +1,7 @@
 #include "sched.h"
 #include "irq.h"
 #include "printf.h"
+#include "timer.h"
 
 static struct task_struct init_task = INIT_TASK;
 struct task_struct *current = &(init_task);
@@ -22,28 +23,32 @@ void _schedule(void)
 {
 	preempt_disable();
 	int next,c;
+	bool flag;
 	struct task_struct * p;
 	while (1) {
-		c = -1;
+
 		next = 0;
+		flag = 0;
 		for (int i = 0; i < NR_TASKS; i++){
 			p = task[i];
-			if (p && p->state == TASK_RUNNING && p->counter > c) {
-				c = p->counter;
+			if (p && p->state == TASK_RUNNING &&  p->runned != true) {
 				next = i;
+				flag = 1;
+				break;
 			}
 		}
-		if (c) {
+		if (flag) {
 			break;
 		}
-		for (int i = 0; i < NR_TASKS; i++) {
-			p = task[i];
-			if (p) {
-				p->counter = (p->counter >> 1) + p->priority;
-			}
+		for (int i = 0; i < NR_TASKS; i++) {   // Si no se encuentras procesos a correr significa que ya se corrieron todos y asi debemos resetear la condicion de corrido.
+			p = task[i];	
+			p->runned = false;
 		}
 	}
+	p = task[next];
+	p->runned = true;    //marcamos al proceso elegido como corrido para que no vuelva a ser ocupado hasta el siguiente loop.
 	switch_to(task[next]);
+
 	preempt_enable();
 }
 
