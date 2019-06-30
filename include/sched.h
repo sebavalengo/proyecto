@@ -40,8 +40,8 @@ struct task_struct {
 	long counter;
 	long priority;
 	long preempt_count;
-	bool runned;
-
+	bool runned=false;
+	long double start_time;
 };
 
 extern void sched_init(void);
