@@ -23,7 +23,6 @@ void _schedule(void)
 	preempt_disable();
 	int next,c;
 	struct task_struct * p;
-	float timer = timer_init();
 	while (1) {
 		c = -1;
 		next = 0;
