@@ -28,20 +28,20 @@ void _schedule(void)
 	while (1) {
 
 		next = 0;
-		flag = 0;
+		flag = 0; //flag que guarda si encontramos proceso para correr
 		for (int i = 0; i < NR_TASKS; i++){
-			p = task[i];
-			if (p && p->state == TASK_RUNNING &&  p->runned != true) {
-				next = i;
-				flag = 1;
+			p = task[i]; //se selecciona el proceso para determinar su estado y si ya fue ejecutado
+			if (p && p->state == TASK_RUNNING &&  p->runned != true) { //se checkea si el proceso esta listo para ser corrido y si no ha sido corrido en el loop actual
+				next = i; //se guarda el lugar de la lista
+				flag = 1; //se cambia el flag ya que encontramos un proceso que correr
 				break;
 			}
 		}
 		if (flag) {
-			break;
+			break; //si encontramos proceso quebramos el while
 		}
 		for (int i = 0; i < NR_TASKS; i++) {   // Si no se encuentras procesos a correr significa que ya se corrieron todos y asi debemos resetear la condicion de corrido.
-			p = task[i];	
+			p = task[i];
 			p->runned = false;
 		}
 	}
@@ -54,7 +54,7 @@ void _schedule(void)
 
 void schedule(void)
 {
-	current->counter = 0;
+	current->runned = true; //se actualiza el estado del primer proceso a que corrio
 	_schedule();
 }
 
