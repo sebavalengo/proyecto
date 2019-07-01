@@ -13,11 +13,10 @@
 #define LAST_TASK task[NR_TASKS-1]
 
 #define TASK_RUNNING				0
-
 extern struct task_struct *current;
 extern struct task_struct * task[NR_TASKS];
 extern int nr_tasks;
-
+typedef enum {false,true} bool; //definimos el tipo bool
 struct cpu_context {
 	unsigned long x19;
 	unsigned long x20;
@@ -40,8 +39,8 @@ struct task_struct {
 	long counter;
 	long priority;
 	long preempt_count;
-	bool runned=false;
-	unsigned int start_time;
+	bool runned; // se agrega el booleano para ver si fue ejecutado o no
+	unsigned int start_time; //se agrega el tiempo en que se inicia el proceso
 };
 
 extern void sched_init(void);

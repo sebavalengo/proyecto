@@ -1,7 +1,8 @@
 #include "sched.h"
 #include "irq.h"
 #include "printf.h"
-#include "timer.h"
+#include "peripherals/timer.h" //para usar el timer_c1
+#include "utils.h" // para utilizar la funcion get32
 
 static struct task_struct init_task = INIT_TASK;
 struct task_struct *current = &(init_task);
@@ -22,7 +23,7 @@ void preempt_enable(void)
 void _schedule(void)
 {
 	preempt_disable();
-	int next,c;
+	int next;
 	bool flag;
 	struct task_struct * p;
 	while (1) {
@@ -76,7 +77,7 @@ void schedule_tail(void) {
 void timer_tick()
 {
 	--current->counter;
-	t= get32(TIMER_C1)
+	unsigned int t= get32(TIMER_C1);
 	if ((current->counter>0 || current->preempt_count >0) && t-(current->start_time)<5000000) {   //ademas de las condiciones predeterminadas comprobamos que el programa no se ejecute por mas de 5 millones de ticks lo que equivale a 5 segundos
 		return;
 	}
