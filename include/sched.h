@@ -1,18 +1,20 @@
 #ifndef _SCHED_H
 #define _SCHED_H
 
-#define THREAD_CPU_CONTEXT			0 		// offset of cpu_context in task_struct 
+#define THREAD_CPU_CONTEXT			0 		// offset of cpu_context in task_struct
 
 #ifndef __ASSEMBLER__
 
 #define THREAD_SIZE				4096
 
-#define NR_TASKS				64 
+#define NR_TASKS				64
 
 #define FIRST_TASK task[0]
 #define LAST_TASK task[NR_TASKS-1]
 
 #define TASK_RUNNING				0
+
+typedef enum {false,true} bool; //definimos el booleano
 
 extern struct task_struct *current;
 extern struct task_struct * task[NR_TASKS];
@@ -36,9 +38,9 @@ struct cpu_context {
 
 struct task_struct {
 	struct cpu_context cpu_context;
-	long state;	
-	long counter;
-	long priority;
+	long state;
+	unsigned int start_time;
+	bool runned;
 	long preempt_count;
 };
 
