@@ -14,7 +14,7 @@ int copy_process(unsigned long fn, unsigned long arg)
 	p->state = TASK_RUNNING;
 	p->counter = p->priority;
 	p->preempt_count = 1; //disable preemtion until schedule_tail
-
+	p->runned = false;  //se pone como estado inicial de esta copia de proceso como no corrido
 	p->cpu_context.x19 = fn;
 	p->cpu_context.x20 = arg;
 	p->cpu_context.pc = (unsigned long)ret_from_fork;
