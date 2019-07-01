@@ -10,9 +10,9 @@ int copy_process(unsigned long fn, unsigned long arg)
 	p = (struct task_struct *) get_free_page();
 	if (!p)
 		return 1;
-	p->priority = current->priority;
 	p->state = TASK_RUNNING;
-	p->counter = p->priority;
+	p->runned = false; //runned en false, ya que no ha sido corrido
+	p->start_time = 0; //tiempo inicio en 0
 	p->preempt_count = 1; //disable preemtion until schedule_tail
 
 	p->cpu_context.x19 = fn;
