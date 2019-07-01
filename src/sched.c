@@ -33,6 +33,7 @@ void _schedule(void)
 			if (p && p->state == TASK_RUNNING && p->runned != true) { // se selecciona el proceso que es corrible y si no ha sido corrido aun
 				flag = true; //se cambia el flag ya que encontramos un proceso
 				next = i; //se guarda el lugar de lista
+				break; //para salir del ciclo for cuando ya tenemos el proceso a ejecutar
 			}
 		}
 		if (flag) { //si encontramos el proceso rompemos el while
